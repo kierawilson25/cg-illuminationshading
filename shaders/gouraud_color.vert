@@ -36,7 +36,7 @@ void main() {
 
     //specular calculations
 
-    vec3 view_direction = normalize(camera_position - view_position)
+    vec3 view_direction = normalize(camera_position - view_position);
      
     vec3 reflection = normalize(reflect(-light_direction, view_normal));
 
