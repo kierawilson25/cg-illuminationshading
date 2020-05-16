@@ -132,7 +132,7 @@ class GlApp {
         for (let i = 0; i < this.scene.models.length; i ++) {
             // NOTE: you need to properly select shader here
             let selected_shader;
-            if(scene.models[i].shader === 'color') {
+            if(this.scene.models[i].shader === 'color') {
                 if(this.algorithm === 'gouraud') {
                     selected_shader = 'gouraud_color';
                 }
