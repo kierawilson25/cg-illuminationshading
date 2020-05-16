@@ -160,7 +160,15 @@ class GlApp {
             glMatrix.mat4.scale(this.model_matrix, this.model_matrix, this.scene.models[i].size);
 
             this.gl.uniform3fv(this.shader[selected_shader].uniform.material_color, this.scene.models[i].material.color);
+			this.gl.uniform3fv(this.shader[selected_shader].uniform.material_specular, this.scene.models[i].material.specular);
+            this.gl.uniform3fv(this.shader[selected_shader].uniform.light_ambient, this.scene.light.ambient);
+            this.gl.uniform3fv(this.shader[selected_shader].uniform.light_color, this.scene.light.point_lights[0].color);
+            this.gl.uniform3fv(this.shader[selected_shader].uniform.light_position, this.scene.light.point_lights[0].position);
+            this.gl.uniform1f(this.shader[selected_shader].uniform.material_shininess, this.scene.models[i].material.shininess);
+            this.gl.uniform3fv(this.shader[selected_shader].uniform.camera_position, this.scene.camera.position);
+
             this.gl.uniformMatrix4fv(this.shader[selected_shader].uniform.projection_matrix, false, this.projection_matrix);
+            
             this.gl.uniformMatrix4fv(this.shader[selected_shader].uniform.view_matrix, false, this.view_matrix);
             this.gl.uniformMatrix4fv(this.shader[selected_shader].uniform.model_matrix, false, this.model_matrix);
 
