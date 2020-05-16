@@ -92,6 +92,15 @@ class GlApp {
 
         // TODO: set texture parameters and upload a temporary 1px white RGBA array [255,255,255,255]
         // ...
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.volume_texture);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR_MIPMAP_NEAREST);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.REPEAT);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.REPEAT);
+
+        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 1, 1, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, new Uint8Array([255,255,255,255]));
+        
+        this.gl.bindTexture(this.gl.TEXTURE_2D, null);
 
         // download the actual image
         let image = new Image();
@@ -107,6 +116,12 @@ class GlApp {
 
     UpdateTexture(texture, image_element) {
         // TODO: update image for specified texture
+        this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, image_element);
+        this.gl.generateMipmap(this.gl.TEXTURE_2D);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, null);
+
+        this.Render();
     }
 
     Render() {
@@ -116,7 +131,24 @@ class GlApp {
         // draw all models
         for (let i = 0; i < this.scene.models.length; i ++) {
             // NOTE: you need to properly select shader here
-            let selected_shader = 'emissive';
+            let selected_shader;
+            if(scene.models[i].shader === 'color') {
+                if(this.algorithm === 'gouraud') {
+                    selected_shader = 'gouraud_color';
+                }
+                else {
+                    selected_shader = 'phong_color';
+                }
+            }
+            else {
+                if(this.algorithm === 'gouraud') {
+                    selected_shader = 'gouraud_texture';
+                }
+                else {
+                    selected_shader = 'phong_texture';
+                }
+            }
+
             this.gl.useProgram(this.shader[selected_shader].program);
 
             // transform model to proper position, size, and orientation
