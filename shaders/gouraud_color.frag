@@ -18,5 +18,5 @@ void main() {
 
 	vec3 newColor = newAmbient + newDiffuse + newSpecular;
 
-	FragColor = vec4(min(newcolor, vec3(1,1,1)), 1.0);
+	FragColor = vec4(min(newColor, vec3(1,1,1)), 1.0);
 }
