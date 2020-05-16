@@ -28,19 +28,17 @@ void main() {
 
     vec3 view_position = vec3(model_matrix * vec4(vertex_position, 1.0));
 
-    vec3 view_normal = normalize(inverse(transpose(mat3(model_matrix))) * vertex_normal);
+    vec3 view_normal = inverse(transpose(mat3(model_matrix))) * vertex_normal;
 
-    vec3 light_direction = normalize(light_position - view_position);
+    vec3 N = normalize(view_normal);
+    vec3 L = normalize(light_position - view_position);
+    diffuse = light_color * clamp(dot(view_normal, light_direction), 0.0, 1.0);
 
-    diffuse = clamp(light_color * dot(view_normal, light_direction), 0.0, 1.0);
+	vec3 V = normalize(camera_position-view_position);
+    vec3 R = normalize(reflect(-L, N))
+    specular = light_color * pow(clamp(dot(R, V), 0.0, 1.0), material_shininess);
 
-    //specular calculations
-
-    vec3 view_direction = normalize(camera_position - view_position);
-     
-    vec3 reflection = normalize(reflect(-light_direction, view_normal));
-
-    specular = light_color * pow(clamp(dot(reflection, view_direction), 0.0, 1.0), material_shininess);
-
-
+    diffuse = clamp(diffuse, 0.0, 1.0);
+	specular = clamp(specular, 0.0, 1.0);
+	ambient = clamp(ambient, 0.0, 1.0);
 }
