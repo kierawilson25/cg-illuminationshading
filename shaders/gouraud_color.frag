@@ -14,7 +14,7 @@ out vec4 FragColor;
 void main() {
 	vec3 newAmbient = ambient * material_color;
 	vec3 newDiffuse = diffuse * material_color;
-	vec3 newSpecular = specular * material_specualar;
+	vec3 newSpecular = specular * material_specular;
 
 	vec3 newColor = newAmbient + newDiffuse + newSpecular;
 
