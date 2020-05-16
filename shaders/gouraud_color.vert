@@ -32,7 +32,7 @@ void main() {
 
     vec3 N = normalize(view_normal);
     vec3 L = normalize(light_position - view_position);
-    diffuse = light_color * clamp(dot(view_normal, light_direction), 0.0, 1.0);
+    diffuse = light_color * clamp(dot(N, L), 0.0, 1.0);
 
 	vec3 V = normalize(camera_position-view_position);
     vec3 R = normalize(reflect(-L, N))
