@@ -30,17 +30,17 @@ void main() {
 
     vec3 view_normal = normalize(inverse(transpose(mat3(model_matrix))) * vertex_normal);
 
-    vec3 light_direction = normalize(light_position - vert_position);
+    vec3 light_direction = normalize(light_position - view_position);
 
-    float dif_dot_prod = dot(v_normal, light_direction);
+    float dif_dot_prod = dot(view_normal, light_direction);
 
-    diffuse = clamp(light_color* d_prod, 0.0, 1.0);
+    diffuse = clamp(light_color* dif_dot_prod, 0.0, 1.0);
 
     //specular calculations
 
     vec3 view_direction = normalize
      
-    vec3 spec_dot_prod = dot(reflect(-light_direction, view_normal), light_direction);
+    float spec_dot_prod = dot(reflect(-light_direction, view_normal), light_direction);
 
     specular = light_color * pow(clamp(spec_dot_prod,0.0, 1.0), material_shininess);
 
