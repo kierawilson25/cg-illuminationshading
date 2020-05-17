@@ -24,7 +24,6 @@ void main() {
     gl_Position = projection_matrix * view_matrix * model_matrix * vec4(vertex_position, 1.0);
 
     ambient = light_ambient;
-    ambient = clamp(ambient, 0.0, 1.0);
 
     //can add a loop here if we want mulpitple lights
 
@@ -36,13 +35,10 @@ void main() {
     {
         vec3 N = normalize(view_normal);
         vec3 L = normalize(light_position - view_position);
-        vec3 hold_diffuse = light_color * clamp(dot(N, L), 0.0, 1.0);
+        diffuse += light_color * clamp(dot(N, L), 0.0, 1.0);
 
         vec3 V = normalize(camera_position-view_position);
         vec3 R = normalize(reflect(-L, N));
-        vec3 hold_specular = light_color * pow(clamp(dot(R, V), 0.0, 1.0), material_shininess);
-
-        diffuse += clamp(hold_diffuse, 0.0, 1.0);
-        specular += clamp(hold_specular, 0.0, 1.0);
+        specular += light_color * pow(clamp(dot(R, V), 0.0, 1.0), material_shininess);
     }
 }
