@@ -37,8 +37,4 @@ void main() {
 	vec3 V = normalize(camera_position-view_position);
     vec3 R = normalize(reflect(-L, N));
     specular = light_color * pow(clamp(dot(R, V), 0.0, 1.0), material_shininess);
-
-    diffuse = clamp(diffuse, 0.0, 1.0);
-	specular = clamp(specular, 0.0, 1.0);
-	ambient = clamp(ambient, 0.0, 1.0);
 }
