@@ -22,7 +22,7 @@ void main() {
 	vec3 l = normalize(light_position - frag_pos);
 	
     // IK(N.L)
-    vec3 diffuse = light_color * dot(frag_normal, l) * material_color;
+    vec3 diffuse = light_color * material_color * dot(frag_normal, l);
 
 	
 	vec3 r = normalize(reflect(-l, frag_normal));
