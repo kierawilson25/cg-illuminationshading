@@ -25,7 +25,7 @@ void main() {
     vec3 diffuse = light_color * dot(frag_normal, l) * material_color;
 
 	
-	vec3 r = normalize(reflect(-light_direction, frag_normal));
+	vec3 r = normalize(reflect(-l, frag_normal));
 	vec3 v = normalize(camera_position - frag_pos);
     // IK(R.V) 
 	vec3 specular = light_color * pow(clamp(dot(r, v), 0.0, 1.0), material_shininess)* material_specular;
