@@ -6,8 +6,9 @@ in vec3 vertex_position;
 in vec3 vertex_normal;
 
 uniform vec3 light_ambient;
-uniform vec3 light_position;
-uniform vec3 light_color;
+uniform vec3 light_position[];
+uniform vec3 light_color[];
+uniform int light_num;
 uniform vec3 camera_position;
 uniform float material_shininess; // n
 uniform mat4 model_matrix;
@@ -23,6 +24,7 @@ void main() {
     gl_Position = projection_matrix * view_matrix * model_matrix * vec4(vertex_position, 1.0);
 
     ambient = light_ambient;
+    ambient = clamp(ambient, 0.0, 1.0);
 
     //can add a loop here if we want mulpitple lights
 
@@ -30,15 +32,17 @@ void main() {
 
     vec3 view_normal = inverse(transpose(mat3(model_matrix))) * vertex_normal;
 
-    vec3 N = normalize(view_normal);
-    vec3 L = normalize(light_position - view_position);
-    diffuse = light_color * clamp(dot(N, L), 0.0, 1.0);
+    for(int i = 0; i < light_num; i++)
+    {
+        vec3 N = normalize(view_normal);
+        vec3 L = normalize(light_position - view_position);
+        vec3 hold_diffuse = light_color * clamp(dot(N, L), 0.0, 1.0);
 
-	vec3 V = normalize(camera_position-view_position);
-    vec3 R = normalize(reflect(-L, N));
-    specular = light_color * pow(clamp(dot(R, V), 0.0, 1.0), material_shininess);
+        vec3 V = normalize(camera_position-view_position);
+        vec3 R = normalize(reflect(-L, N));
+        vec3 hold_specular = light_color * pow(clamp(dot(R, V), 0.0, 1.0), material_shininess);
 
-    diffuse = clamp(diffuse, 0.0, 1.0);
-	specular = clamp(specular, 0.0, 1.0);
-	ambient = clamp(ambient, 0.0, 1.0);
+        diffuse += clamp(hold_diffuse, 0.0, 1.0);
+        specular += clamp(hold_specular, 0.0, 1.0);
+    }
 }
