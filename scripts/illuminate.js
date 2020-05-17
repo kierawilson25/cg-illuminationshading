@@ -138,7 +138,6 @@ class GlApp {
                 }
                 else {
                     selected_shader = 'phong_color';
-                    console.log(selected_shader)
                 }
             }
             else {
