@@ -30,12 +30,13 @@ void main() {
 
     vec3 view_normal = inverse(transpose(mat3(model_matrix))) * vertex_normal;
 
-    vec3 l = normalize(light_position - view_position);
-    diffuse = light_color * clamp(dot(view_normal, l), 0.0, 1.0);
+    vec3 N = normalize(view_normal);
+    vec3 L = normalize(light_position - view_position);
+    diffuse = light_color * clamp(dot(N, L), 0.0, 1.0);
 
-	vec3 v = normalize(camera_position-view_position);
-    vec3 r = normalize(reflect(-l, view_normal));
-    specular = light_color * pow(clamp(dot(r, v), 0.0, 1.0), material_shininess);
+	vec3 V = normalize(camera_position-view_position);
+    vec3 R = normalize(reflect(-L, N));
+    specular = light_color * pow(clamp(dot(R, V), 0.0, 1.0), material_shininess);
 
     diffuse = clamp(diffuse, 0.0, 1.0);
 	specular = clamp(specular, 0.0, 1.0);
